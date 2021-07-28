@@ -1,0 +1,50 @@
+version: '3'
+services:
+  website:
+    image: website
+    container_name: lde.website
+    build:
+      context: ../website/WebSite/
+      dockerfile: Dockerfile
+    ports:
+      - 5001:5001
+
+  gamesapi.service:
+    image: gamesapiservice
+    container_name: lde.gamesapi
+    build:
+      context: ../games.api/GamesApi/
+      dockerfile: Dockerfile
+    environment:
+      GamesApi__ConnectionString: 'server=192.168.1.120;port=5433;database=gamesapi;uid=postgres;password=postgres;'
+    ports:
+      - 5002:5002
+
+  relatedproductsapi.service:
+    image: relatedproductsapiservice
+    container_name: lde.relatedproductsapi
+    build:
+      context: ../relatedproducts.api/RelatedProductsApi/
+      dockerfile: Dockerfile
+    environment:
+      GamesApi__ConnectionString: 'server=192.168.1.120;port=5433;database=relatedproductsapi;uid=postgres;password=postgres;'
+    ports:
+      - 5003:5003
+
+  ratelimitapi.service:
+    image: ratelimitapiservice
+    container_name: lde.ratelimitapi
+    build:
+      context: ../ratelimit.api/RateLimit/
+      dockerfile: Dockerfile
+    ports:
+      - 5004:5004
+
+  cartapi.service:
+    image: cartapiservice
+    container_name: lde.cartapi
+    build:
+      context: ../cart.api/CartApi/
+      dockerfile: Dockerfile
+    ports:
+      - 5005:5005
